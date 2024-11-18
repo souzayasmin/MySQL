@@ -1,0 +1,17 @@
+-- listar todos os nomes e compras ---------
+select
+    u.name, 
+    max(c.data_compra) as ultima_compra
+from 
+   usuario u 
+left join 
+   compra c 
+on
+   u.id_usuario = c.fk_id_usuario   
+group by u.id_usuario;
+
+-- usuários que já realizaram compras ------
+   c.data_compra is not null
+group by u.id_usuario;
+
+
