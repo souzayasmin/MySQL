@@ -7,7 +7,7 @@ create table usuario (
     name varchar(100) not null,
     email varchar(100) not null unique,
     password varchar(50) not null,
-    cpf char(11) not null,
+    cpf char(11) not null unique,
     data_nascimento date not null
 );
 
@@ -45,7 +45,7 @@ insert into organizador (nome, email, senha, telefone) values
 ('Organização ABC', 'contato@abc.com', 'senha123', '11111222333'),
 ('Eventos XYZ', 'info@xyz.com', 'senha123', '11222333444'),
 ('Festivais BR', 'contato@festbr.com', 'senha123', '11333444555'),
-('Eventos GL', 'support@gl.com', 'senha123', '11444555666')
+('Eventos GL', 'support@gl.com', 'senha123', '11444555666'),
 ('Eventos JQ', 'contact@jq.com', 'senha123', '11555666777');
 
 create table evento (
@@ -85,6 +85,12 @@ create table compra(
     foreign key (fk_id_usuario) references usuario(id_usuario)
 );
 
+insert into compra (data_compra, fk_id_usuario) values
+    ("2024-11-14 19:04", 1),
+    ("2024-11-13 17:00", 1),
+    ("2024-11-12 15:30", 2),
+    ("2024-11-11 14:20", 2);
+
 create table ingresso_compra(
     id_ingresso_compra int auto_increment primary key,
     quantidade int not null,
@@ -94,6 +100,12 @@ create table ingresso_compra(
     foreign key (fk_id_compra) references compra(id_compra)
 );
 
+insert into ingresso_compra(fk_id_compra, fk_id_ingresso, quantidade) values
+    (1, 4, 5),
+    (1, 5, 2),
+    (2, 1, 1),
+    (2, 2, 2);
+     
 create table presenca(
     id_presenca int auto_increment primary key,
     data_hora_checkin datetime,
@@ -103,38 +115,3 @@ create table presenca(
     foreign key (fk_id_compra) references compra(id_compra)
 );
 
-select 500 div 3 as pacotes_de_3_ingressos_vip;
-
-select 500 / 3 as pacotes_de_3_ingressos_vip;
-
-select round(preco, 2) as preco_arredondado from ingresso where tipo = 'vip';
-
-select round(500/3, 2) as resultado;
-
-select round(rand() * 100) as porcentagem_desconto;
-
-select concat(name, "-", data_nascimento, "-", email) from usuario;
-
-select lower(nome) as nome_evento from evento;
-
-select name, length(cpf) as tamanho_cpf from usuario;
-
-insert into compra (data_compra, fk_id_usuario) values (now(), 1);
-
-insert into compra (data_compra, fk_id_usuario) values (curdate(), 1);
-
-select * from compra where date (data_compra) = curdate();
-
-select * from compra where date (data_compra) = now();
-
-select nome, datediff(data_hora, curdate()) as dias_para_evento from evento;
-
-select fk_id_evento, avg (preco) as preco_medio from ingresso group by fk_id_evento;
-
-select fk_id_evento, round(avg(preco), 2) as preco_medio from ingresso group by fk_id_evento;
-
-select count(*) as total_usuarios from usuario;
-
-select sum(quantidade) as quantidade_comprada from ingresso_compra where fk_id_compra = 1;
-
-insert into ingresso_compra (quantidade, fk_id_ingresso, fk_id_compra) values (5, 2, 1);

@@ -1,0 +1,35 @@
+select 500 div 3 as pacotes_de_3_ingressos_vip;
+
+select 500 / 3 as pacotes_de_3_ingressos_vip;
+
+select round(preco, 2) as preco_arredondado from ingresso where tipo = 'vip';
+
+select round(500/3, 2) as resultado;
+
+select round(rand() * 100) as porcentagem_desconto;
+
+select concat(name, "-", data_nascimento, "-", email) from usuario;
+
+select lower(nome) as nome_evento from evento;
+
+select name, length(cpf) as tamanho_cpf from usuario;
+
+insert into compra (data_compra, fk_id_usuario) values (now(), 1);
+
+insert into compra (data_compra, fk_id_usuario) values (curdate(), 1);
+
+select * from compra where date (data_compra) = curdate();
+
+select * from compra where date (data_compra) = now();
+
+select nome, datediff(data_hora, curdate()) as dias_para_evento from evento;
+
+select fk_id_evento, avg (preco) as preco_medio from ingresso group by fk_id_evento;
+
+select fk_id_evento, round(avg(preco), 2) as preco_medio from ingresso group by fk_id_evento;
+
+select count(*) as total_usuarios from usuario;
+
+select sum(quantidade) as quantidade_comprada from ingresso_compra where fk_id_compra = 1;
+
+insert into ingresso_compra (quantidade, fk_id_ingresso, fk_id_compra) values (5, 2, 1);

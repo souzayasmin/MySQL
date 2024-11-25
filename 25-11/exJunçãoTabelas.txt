@@ -1,0 +1,85 @@
+-- exercício 1 - inner join
+select 
+    e.nome as evento,
+    o.nome as organizador,
+    e.data_hora,
+    e.local
+from 
+    evento e
+inner join 
+    organizador o on e.fk_id_organizador = o.id_organizador
+where 
+    e.data_hora >= '2024-11-13';
+
+-- exercício 2 - inner join com data e hora
+select
+    i.tipo as tipo_ingresso,
+    ic.quantidade,
+    e.nome as evento,
+    c.data_compra
+from
+    ingresso_compra ic
+inner join
+    ingresso i on ic.fk_id_ingresso = i.id_ingresso
+inner join
+    evento e on i.fk_id_evento = e.id_evento
+inner join
+    compra c on ic.fk_id_compra = c.id_compra
+where
+    year(c.data_compra) = 2024;
+
+-- exercício 3 - left join
+select 
+    o.nome as organizador,
+    coalesce(e.nome, 'nenhum evento') as evento
+from 
+    organizador o
+left join 
+    evento e on o.id_organizador = e.fk_id_organizador;
+
+
+-- exercício 4 - right join
+select 
+    e.nome as evento,
+    coalesce(sum(ic.quantidade), 0) as ingressos_vendidos
+from 
+    evento e
+left join 
+    ingresso i on e.id_evento = i.fk_id_evento
+left join 
+    ingresso_compra ic on i.id_ingresso = ic.fk_id_ingresso
+group by 
+    e.id_evento, e.nome;
+
+
+-- exercício 5 - full join
+select 
+    u.name as usuario,
+    coalesce(e.nome, 'nenhum evento') as evento,
+    coalesce(sum(ic.quantidade), 0) as ingressos_comprados
+from 
+    usuario u
+left join 
+    compra c on u.id_usuario = c.fk_id_usuario
+left join 
+    ingresso_compra ic on c.id_compra = ic.fk_id_compra
+left join 
+    ingresso i on ic.fk_id_ingresso = i.id_ingresso
+left join 
+    evento e on i.fk_id_evento = e.id_evento
+group by 
+    u.id_usuario, e.id_evento
+
+union
+select 
+    'nenhum usuário' as usuario,
+    e.nome as evento,
+    0 as ingressos_comprados
+from 
+    evento e
+left join 
+    ingresso i on e.id_evento = i.fk_id_evento
+left join 
+    ingresso_compra ic on i.id_ingresso = ic.fk_id_ingresso
+where 
+    ic.id_ingresso_compra is null;
