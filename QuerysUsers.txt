@@ -1,0 +1,48 @@
+-- cria o usuário 'yasmin2' com senha  
+create user 'yasmin2'@'localhost' identified by 'senha123';
+
+-- concede permissão para monitorar processos  
+grant process on *.* to 'yasmin2'@'localhost';
+
+-- permite acesso básico ao banco 'vioyasmin'  
+grant usage on vioyasmin.* to 'yasmin2'@'localhost';
+
+-- concede permissões para criar, alterar e excluir tabelas  
+grant create, alter, drop on vioyasmin.* to 'yasmin2'@'localhost';
+
+-- cria e exclui a tabela 'exemplo'  
+create table exemplo (id int);
+drop table exemplo;
+
+-- insere um valor na tabela 'exemplo'  
+insert into exemplo (id) values (1);
+
+-- revoga a permissão de criação de tabelas  
+revoke create on vioyasmin.* from 'yasmin2'@'localhost';
+
+-- cria as tabelas 'exemplo2' e 'exemplo3'  
+create table exemplo2 (id int);
+create table exemplo3 (id int);
+
+-- permite select e insert na tabela 'usuario'  
+grant select on vioyasmin.usuario to 'yasmin2'@'localhost';
+grant insert (name) on vioyasmin.usuario to 'yasmin2'@'localhost';
+
+-- insere um nome na tabela 'usuario'  
+insert into vioyasmin.usuario (name) values ('Novo nome');
+
+-- revoga a permissão de inserir na coluna 'name' da tabela 'usuario'  
+revoke insert (name) on vioyasmin.usuario from 'yasmin2'@'localhost';
+
+-- permite update na tabela 'organizador'  
+grant update on vioyasmin.organizador to 'yasmin2'@'localhost';
+
+-- permite acesso apenas à coluna 'id_organizador' da tabela 'organizador'  
+grant select(id_organizador) on vioyasmin.organizador to 'yasmin2'@'localhost';
+
+-- tentar alterar os dados da tabela organizador 
+update vioyasmin.organizador set nome = 'Novo nome' where id_organizador = 1;
+
+-- revogar todas as permissões concedidas
+revoke all privileges on vioyasmin.* from 'yasmin2'@'localhost';
+
